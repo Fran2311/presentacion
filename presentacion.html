@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡Bienvenido a Mi Mundo!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      color: white;
+      text-align: center;
+      overflow-x: hidden;
+    }
+    header {
+      padding: 60px 20px;
+      background: rgba(0, 0, 0, 0.3);
+      animation: fadeIn 2s ease-out;
+    }
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      margin: 0;
+      animation: pulse 2s infinite;
+    }
+    p {
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+    .button {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 15px 30px;
+      background-color: #ff00cc;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.3s ease;
+    }
+    .button:hover {
+      transform: scale(1.1);
+      background-color: #ff66ff;
+    }
+    .sparkles {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px);
+      background-size: 20px 20px;
+      animation: sparkle 5s linear infinite;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    @keyframes sparkle {
+      0% { background-position: 0 0; }
+      100% { background-position: 100px 100px; }
+    }
+    footer {
+      margin-top: 80px;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="sparkles"></div>
+  <header>
+    <h1>¡Hola, soy Fran231109!</h1>
+    <p>Bienvenido a mi espacio, donde comparto lo que me gusta y lo que me inspira ✨</p>
+    <a class="button" href="https://discord.gg/tu-enlace" target="_blank">¡Únete a mi Discord!</a>
+  </header>
+  <footer>
+    <p>Hecho con ❤️ por Fran231109</p>
+  </footer>
+</body>
+</html>
