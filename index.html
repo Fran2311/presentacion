@@ -2,144 +2,103 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>¡Bienvenido a Mi Mundo!</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fran231109</title>
   <style>
-    body {
+    html, body {
       margin: 0;
-      font-family: 'Quicksand', sans-serif;
-      background: linear-gradient(135deg, #00c6ff, #0072ff);
-      color: white;
-      text-align: center;
-      overflow-x: hidden;
-      cursor: none;
+      padding: 0;
+      background-color: #fffbe6; /* Fondo crema */
+      overflow: hidden;
     }
-    header {
-      padding: 60px 20px;
-      background: rgba(0, 0, 0, 0.3);
-      animation: fadeIn 2s ease-out;
+    canvas {
+      display: block;
     }
-    h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 3rem;
-      margin: 0;
-      animation: pulse 2s infinite;
-    }
-    p {
-      font-size: 1.2rem;
-      margin-top: 10px;
-    }
-    .button {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 15px 30px;
-      background-color: #ff00cc;
-      color: white;
-      border: none;
-      border-radius: 25px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: transform 0.3s ease;
-    }
-    .button:hover {
-      transform: scale(1.1);
-      background-color: #ff66ff;
-    }
-    .sparkles {
-      position: absolute;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      background: radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px);
-      background-size: 20px 20px;
-      animation: sparkle 5s linear infinite;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-    @keyframes sparkle {
-      0% { background-position: 0 0; }
-      100% { background-position: 100px 100px; }
-    }
-    footer {
-      margin-top: 80px;
-      font-size: 0.9rem;
-      opacity: 0.7;
-    }
-    #dragon {
-      position: fixed;
-      width: 80px;
-      height: 80px;
-      pointer-events: none;
-      z-index: 999;
-      transition: transform 0.05s linear;
-    }
-    .particle {
-      position: fixed;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      pointer-events: none;
-      animation: fadeOut 0.5s ease-out forwards;
-    }
-    @keyframes fadeOut {
-      to {
-        transform: scale(2);
-        opacity: 0;
-      }
+    audio {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <!-- 🎶 Música automática -->
+
+  <!-- Música -->
   <audio autoplay loop>
-    <source src="audio/J%20Balvin%20-%20Si%20Tu%20Novio%20Te%20Deja%20Sola%20ft.%20Bad%20Bunny%20%28Official%20Video%29.mp3" type="audio/mpeg">
-    Tu navegador no soporta el elemento de audio.
+    <source src="audio/J%20Balvin%20-%20Si%20Tu%20Novio%20Te%20Deja%20Sola%20ft.%20Bad%20Bunny%20(Official%20Video).mp3" type="audio/mpeg">
+    Tu navegador no soporta audio.
   </audio>
 
-  <!-- ✨ Fondo mágico -->
-  <div class="sparkles"></div>
+  <!-- Canvas para el efecto -->
+  <canvas id="canvas"></canvas>
 
-  <!-- 🐉 Dragón que sigue el cursor -->
-  <img id="dragon" src="https://raw.githubusercontent.com/aryandadwal2006/dragonpointer/main/dragon.gif" alt="dragon" />
-
-  <!-- 🏠 Contenido principal -->
-  <header>
-    <h1>¡Hola, soy Fran231109!</h1>
-    <p>Bienvenido a mi espacio, donde comparto lo que me gusta y lo que me inspira ✨</p>
-    <a class="button" href="https://discord.gg/tu-enlace" target="_blank">¡Únete a mi Discord!</a>
-  </header>
-
-  <footer>
-    <p>Hecho con ❤️ por Fran231109</p>
-  </footer>
-
-  <!-- 🧠 Código JS para el dragón y partículas -->
   <script>
-    const dragon = document.getElementById('dragon');
-    document.addEventListener('mousemove', e => {
-      dragon.style.left = e.clientX + 'px';
-      dragon.style.top = e.clientY + 'px';
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
 
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.style.left = `${e.clientX}px`;
-      p.style.top = `${e.clientY}px`;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
 
-      // Generar un color aleatorio entre verde y azul
-      const green = Math.floor(Math.random() * 156) + 100; // 100-255
-      const blue = Math.floor(Math.random() * 156) + 100;  // 100-255
-      p.style.background = `rgb(0, ${green}, ${blue})`;
-
-      document.body.appendChild(p);
-      setTimeout(() => p.remove(), 500);
+    window.addEventListener("resize", () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
     });
+
+    let pointer = { x: width / 2, y: height / 2 };
+    let particles = [];
+
+    document.addEventListener("mousemove", (e) => {
+      pointer.x = e.clientX;
+      pointer.y = e.clientY;
+    });
+
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.radius = Math.random() * 8 + 4;
+        this.color = `hsl(${Math.random() * 120 + 160}, 100%, 60%)`; // Verde y azul
+        this.velocityX = (Math.random() - 0.5) * 4;
+        this.velocityY = (Math.random() - 0.5) * 4;
+        this.alpha = 1;
+      }
+
+      update() {
+        this.x += this.velocityX;
+        this.y += this.velocityY;
+        this.alpha -= 0.02;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = this.alpha;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+
+      const p = new Particle(pointer.x, pointer.y);
+      particles.push(p);
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        particles[i].draw();
+        if (particles[i].alpha <= 0) {
+          particles.splice(i, 1);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
   </script>
 </body>
 </html>
